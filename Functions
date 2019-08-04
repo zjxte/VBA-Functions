@@ -1,0 +1,18 @@
+Function GetPN(PN As String)
+'get part number type such as 1234-5678 or 12345-678, 8 numbers in total
+
+'get Part number from description
+Dim allMatches As Object
+Dim RE As Object
+Set RE = CreateObject("Vbscript.regexp")
+RE.Pattern = "([0-9]{4,5}-[0-9]{3,4})"
+RE.Global = True
+RE.ignorecase = True
+Set allMatches = RE.Execute(PN)
+If (allMatches.Count <> 0) Then
+  result = allMatches.Item(0).submatches.Item(0)
+  Else
+  result = ""
+  End If
+GetPN = result
+End Function
