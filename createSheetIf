@@ -1,0 +1,17 @@
+Function CreateSheetIf(strSheetName As String) As Boolean
+'create a new sheet if doesn't exsiting
+
+Dim wsTest As Worksheet
+CreateSheetIf = False
+
+Set wsTest = Nothing
+On Error Resume Next
+Set wsTest = ActiveWorkbook.Worksheets(strSheetName)
+On Error GoTo 0
+ 
+If wsTest Is Nothing Then
+    CreateSheetIf = True
+    Worksheets.Add.Name = strSheetName
+End If
+
+End Function
