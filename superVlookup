@@ -1,0 +1,18 @@
+'it can vlookup and get multiple result
+'the vloop worksheet must be opened as same time
+
+Function mySupperVlookup(lookupValue As String, LookupRange As Range, ColumnNumber As Integer) As String
+
+  Dim i As Long
+  Dim Result As String
+  'SingleCellExtract As String
+  
+  For i = 1 To LookupRange.Columns(1).Cells.Count
+    If LookupRange.Cells(i, 1) = lookupValue Then
+    Result = Result & " " & LookupRange.Cells(i, ColumnNumber) & "," & Chr(10)
+    End If
+  Next i
+  
+  mySupperVlookup = Left(Result, Len(Result) - 1)
+  
+  End Function
