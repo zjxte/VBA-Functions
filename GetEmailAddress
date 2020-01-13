@@ -1,0 +1,26 @@
+'Get the email address by using regex
+
+Function GetEmailAddress(ByVal s As String) As String
+  Dim x As Long, AtSign As Long
+  Dim Locale As String, Domain As String
+  Locale = "[A-Za-z0-9.!#$%&'*/=?^_`{|}~+-]"
+  Domain = "[A-Za-z0-9._-]"
+  AtSign = InStr(s, "@")
+  If AtSign = 0 Then Exit Function
+  For x = AtSign To 1 Step -1
+    If Not Mid(" " & s, x, 1) Like Locale Then
+      s = Mid(s, x)
+      If Left(s, 1) = "." Then s = Mid(s, 2)
+      Exit For
+    End If
+  Next
+  AtSign = InStr(s, "@")
+  For x = AtSign + 1 To Len(s) + 1
+    If Not Mid(s & " ", x, 1) Like Domain Then
+      s = Left(s, x - 1)
+      If Right(s, 1) = "." Then s = Left(s, Len(s) - 1)
+      GetEmailAddress = s
+      Exit For
+    End If
+  Next
+End Function
