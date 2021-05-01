@@ -1,4 +1,4 @@
-
+'https://www.rondebruin.nl/win/s1/outlook/bmail2.htm
 Sub BodyVsHTMLBody()
 
 Dim rng As Range
@@ -11,8 +11,8 @@ Set olMail = ol.CreateItem(olMailItem)
 With olMail
     .To = "test@test.com"
     .Subject = "Bonus letters"
-    '.Body = "Hello Kamal," & vbNewLine & vbNewLine & "You have performed well in last quarter and you receive a hike of 100% as bonus." & vbNewLine & vbNewLine & "Regards," & vbNewLine & "Team HR"
-    
+    '.Body = "Hello Sir," & vbNewLine & vbNewLine & "You have performed well in last quarter and you receive a hike of 100% as bonus." & vbNewLine & vbNewLine & "Regards," & vbNewLine & "Team HR"
+  
     '.HTMLBody = "<b>Hello Kamal,</b> <br/><br/>You have performed well in last quarter and you receive a hike of 100% as bonus. <br/> <table border=1>   <tbody>    <tr><th>FirstName</th><th>Last Name</th></tr>     <tr><td>" & Cells(2, 1).Value & "</td><td>" & Cells(2, 2).Value & "</td></tr>     </tbody>     </table>     <br/><br/>Regards,<br/>Team HR"
     .HTMLBody = RangetoHTML(rng)
     .Display
