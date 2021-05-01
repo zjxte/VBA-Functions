@@ -1,0 +1,22 @@
+Sub ReadEmails()
+
+Dim ol As Outlook.Application
+Set ol = New Outlook.Application
+
+Dim olNs As Outlook.Namespace
+Set olNs = ol.GetNamespace("MAPI")
+
+Dim fldr As Outlook.MAPIFolder
+Set fldr = olNs.GetDefaultFolder(olFolderInbox).Folders("Folder1")
+
+Dim olMail As Outlook.MailItem
+
+r = 2
+For Each olMail In fldr.Items
+    Cells(r, 1).Value = olMail.Subject
+    Cells(r, 2).Value = olMail.SenderName
+    Cells(r, 3).Value = olMail.CC
+    r = r + 1
+Next
+
+End Sub
