@@ -1,1 +1,74 @@
-Function RangetoHTML (rng as range)
+
+Sub BodyVsHTMLBody()
+
+Dim rng As Range
+Dim ol As Outlook.Application
+Dim olMail As Outlook.MailItem
+
+Set ol = New Outlook.Application
+Set olMail = ol.CreateItem(olMailItem)
+
+With olMail
+    .To = "test@test.com"
+    .Subject = "Bonus letters"
+    '.Body = "Hello Kamal," & vbNewLine & vbNewLine & "You have performed well in last quarter and you receive a hike of 100% as bonus." & vbNewLine & vbNewLine & "Regards," & vbNewLine & "Team HR"
+    
+    '.HTMLBody = "<b>Hello Kamal,</b> <br/><br/>You have performed well in last quarter and you receive a hike of 100% as bonus. <br/> <table border=1>   <tbody>    <tr><th>FirstName</th><th>Last Name</th></tr>     <tr><td>" & Cells(2, 1).Value & "</td><td>" & Cells(2, 2).Value & "</td></tr>     </tbody>     </table>     <br/><br/>Regards,<br/>Team HR"
+    .HTMLBody = RangetoHTML(rng)
+    .Display
+End With
+
+End Sub
+
+Function RangetoHTML(rng As Range)
+
+    Dim fso As Object
+    Dim ts As Object
+    Dim TempFile As String
+    Dim TempWB As Workbook
+
+    TempFile = Environ$("temp") & "\" & Format(Now, "dd-mm-yy h-mm-ss") & ".htm"
+
+    'Copy the range and create a new workbook to past the data in
+    rng.Copy
+    Set TempWB = Workbooks.Add(1)
+    With TempWB.Sheets(1)
+        .Cells(1).PasteSpecial Paste:=8
+        .Cells(1).PasteSpecial xlPasteValues, , False, False
+        .Cells(1).PasteSpecial xlPasteFormats, , False, False
+        .Cells(1).Select
+        Application.CutCopyMode = False
+        On Error Resume Next
+        .DrawingObjects.Visible = True
+        .DrawingObjects.Delete
+        On Error GoTo 0
+    End With
+
+    'Publish the sheet to a htm file
+    With TempWB.PublishObjects.Add( _
+         SourceType:=xlSourceRange, _
+         Filename:=TempFile, _
+         Sheet:=TempWB.Sheets(1).Name, _
+         Source:=TempWB.Sheets(1).UsedRange.Address, _
+         HtmlType:=xlHtmlStatic)
+        .Publish (True)
+    End With
+
+    'Read all data from the htm file into RangetoHTML
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set ts = fso.GetFile(TempFile).OpenAsTextStream(1, -2)
+    RangetoHTML = ts.readall
+    ts.Close
+    RangetoHTML = Replace(RangetoHTML, "align=center x:publishsource=", _
+                          "align=left x:publishsource=")
+
+    'Close TempWB
+    TempWB.Close savechanges:=False
+
+    'Delete the htm file we used in this function
+    Kill TempFile
+
+    Set ts = Nothing
+    Set fso = Nothing
+    Set TempWB = Nothing
+End Function
