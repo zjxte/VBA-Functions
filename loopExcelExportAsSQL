@@ -1,0 +1,8 @@
+-- DROP TABLE IF EXISTS  PurchaseHistory;
+-- CREATE TABLE PurchaseHistory (buyer VARCHAR(10),PN VARCHAR(20),desc VARCHAR(255),Supplier VARCHAR(255),Price DOUBLE,Qty DOUBLE,PurchaseDate date); 
+-- INSERT INTO PurchaseHistory ('buyer','PN','desc','Supplier','Price','Qty','PurchaseDate')
+-- VALUES
+-- ('DEFAULT','2610-2004','COUPLER - M16','XXX Services','30','3.006','01/12/2014'),
+-- ('DEFAULT','2619-2011','EXE DOME HD M20 STOPPING PLUG','XXX Services','36','3.45','01/12/2014')
+-- ;
+-- DELETE  FROM PurchaseHistory WHERE buyer ="test";
