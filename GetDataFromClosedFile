@@ -1,0 +1,33 @@
+Sub GetDataFromClosedFile()
+
+    Dim cn As ADODB.Connection
+    Dim rs As ADODB.Recordset
+    
+    Sheet1.Range("A1").CurrentRegion.Offset(1, 0).Clear
+    
+    Set cn = New ADODB.Connection
+    
+    cn.ConnectionString = _
+        "Provider=Microsoft.ACE.OLEDB.12.0;" & _
+        "Data Source=" & ThisWorkbook.Path & "\My Files\Movies.xlsx;" & _
+        "Extended Properties='Excel 12.0 Xml;HDR=YES';"
+    
+    cn.Open
+    
+    Set rs = New ADODB.Recordset
+    
+    rs.ActiveConnection = cn
+    rs.Source = _
+        "SELECT * FROM [Sheet1$] " _
+        & "WHERE [Oscar Wins] >= 1 AND [Genre] = 'Science Fiction' AND [Title] LIKE 'star%'"
+        
+    rs.Open
+    
+    Sheet1.Range("A2").CopyFromRecordset rs
+    
+    Sheet1.Range("A1").CurrentRegion.EntireColumn.AutoFit
+    
+    rs.Close
+    cn.Close
+    
+End Sub
