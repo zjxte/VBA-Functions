@@ -1,0 +1,59 @@
+Sub ScrapeByRelevance()
+On Error Resume Next
+
+Sheet1.Range("a1").CurrentRegion = ""
+
+Dim web As String
+web = "https://www.directbadminton.co.uk/sport/badminton/badminton-rackets/yonex-badminton-rackets"
+
+Dim ie As InternetExplorer
+Dim html As HTMLDocument
+Set ie = CreateObject("InternetExplorer.Application")
+ie.Visible = False
+ie.Navigate web
+
+While ie.Busy
+    DoEvents
+Wend
+While ie.ReadyState < 4
+    DoEvents
+Wend
+
+Set html = ie.Document
+Dim elements As IHTMLElementCollection
+
+Set elements = html.getElementsByClassName("block-with-text")
+
+For i = 0 To elements.Length - 1
+     Sheet1.Range("A" & (i + 2)) = elements(i).innerText
+Next i
+
+Set elements = html.getElementsByClassName("new-price")
+
+For i = 0 To elements.Length - 1
+    Sheet1.Range("B" & (i + 2)) = elements(i).innerText
+Next i
+
+Set elements = html.getElementsByClassName("old-price")
+For i = 0 To elements.Length - 1
+    Sheet1.Range("C" & (i + 2)) = elements(i).innerText
+Next i
+
+Set elements = html.getElementsByClassName("save")
+For i = 0 To elements.Length - 1
+    Sheet1.Range("D" & (i + 2)) = Right(elements(i).innerText, 3)
+Next i
+
+
+
+ie.Quit
+Set ie = Nothing
+
+Sheet1.Range("A1") = "Name"
+Sheet1.Range("B1") = "Price"
+Sheet1.Range("C1") = "Old Price"
+Sheet1.Range("D1") = "Saving"
+
+MsgBox ("done")
+
+End Sub
