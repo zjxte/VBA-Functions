@@ -6,7 +6,7 @@ Sub GetDataFromClosedFile()
     Sheet1.Range("A1").CurrentRegion.Offset(1, 0).Clear
     
     Set cn = New ADODB.Connection
-    
+    ' need to add Tools -> Reference -> Microsoft ActiveX Data Objects 6.1 Library
     cn.ConnectionString = _
         "Provider=Microsoft.ACE.OLEDB.12.0;" & _
         "Data Source=" & ThisWorkbook.Path & "\My Files\Movies.xlsx;" & _
